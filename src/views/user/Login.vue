@@ -101,7 +101,7 @@
           class="login-button"
           :loading="loginBtn"
           @click.stop.prevent="handleSubmit"
-          :disabled="loginBtn">ログイン
+          :disabled="loginBtn">{{$t('label.login')}}
         </a-button>
       </a-form-item>
 

@@ -3,6 +3,9 @@ import App from './App.vue'
 import Storage from 'vue-ls'
 import router from './router'
 import store from './store/'
+//引入local
+import i18n from './components/locale'
+
 
 import { VueAxios } from "@/utils/request"
 
@@ -63,6 +66,7 @@ Vue.use(VueAreaLinkage);
 new Vue({
   router,
   store,
+  i18n,
   mounted () {
     store.commit('SET_SIDEBAR_TYPE', Vue.ls.get(SIDEBAR_TYPE, true))
     store.commit('TOGGLE_THEME', Vue.ls.get(DEFAULT_THEME, config.navTheme))
