@@ -1,6 +1,7 @@
 <template>
   <a-config-provider :locale="locale">
     <div id="app">
+      <button @click="()=>{$i18n.locale =$i18n.locale === 'zh'?'en':'zh'}">语言</button >
       <router-view/>
     </div>
   </a-config-provider>
