@@ -130,7 +130,7 @@
             dataIndex: 'cusName'
           },
           {
-            title:'会社住所',
+              title:'会社住所',
             align:"center",
             dataIndex: 'cusAddress'
           },

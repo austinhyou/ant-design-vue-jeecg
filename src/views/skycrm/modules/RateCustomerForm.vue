@@ -5,12 +5,12 @@
         <a-row>
           <a-col :span="24">
             <a-form-item label="番号" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <a-input v-decorator="['rateNum']" placeholder="请输入番号"></a-input>
+              <j-dict-select-tag type="list" v-decorator="['rateNum', validatorRules.rateNum]" :trigger-change="true" dictCode="ord_customer,ORD_NUM,ORD_NUM" placeholder="请选择番号"/>
             </a-form-item>
           </a-col>
           <a-col :span="24">
             <a-form-item label="会社名" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <a-input v-decorator="['rateName']" placeholder="请输入会社名"></a-input>
+              <j-dict-select-tag type="list" v-decorator="['rateName', validatorRules.rateName]" :trigger-change="true" dictCode="cus_customer,CUS_NAME,CUS_NAME" placeholder="请选择会社名"/>
             </a-form-item>
           </a-col>
           <a-col :span="24">
@@ -30,7 +30,7 @@
           </a-col>
           <a-col :span="24">
             <a-form-item label="総額" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <a-input-number v-decorator="['rateTotal', validatorRules.rateTotal]" placeholder="请输入総額" style="width: 100%"/>
+              <a-input v-decorator="['rateTotal', validatorRules.rateTotal]" placeholder="请输入総額"></a-input>
             </a-form-item>
           </a-col>
           <a-col :span="24">
@@ -45,12 +45,7 @@
           </a-col>
           <a-col :span="24">
             <a-form-item label="入力時間" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <a-input v-decorator="['rateTime']" placeholder="请输入入力時間"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="24">
-            <a-form-item label="操作記録" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <a-input v-decorator="['rateNote']" placeholder="请输入操作記録"></a-input>
+              <j-date placeholder="请选择入力時間" v-decorator="['rateTime']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
             </a-form-item>
           </a-col>
           <a-col v-if="showFlowSubmitButton" :span="24" style="text-align: center">
@@ -69,12 +64,14 @@
   import { validateDuplicateValue } from '@/utils/util'
   import JFormContainer from '@/components/jeecg/JFormContainer'
   import JDate from '@/components/jeecg/JDate'  
+  import JDictSelectTag from "@/components/dict/JDictSelectTag"
 
   export default {
     name: 'RateCustomerForm',
     components: {
       JFormContainer,
       JDate,
+      JDictSelectTag,
     },
     props: {
       //流程表单data
@@ -110,6 +107,16 @@
         },
         confirmLoading: false,
         validatorRules: {
+          rateNum: {
+            rules: [
+              { required: true, message: '请输入番号!'},
+            ]
+          },
+          rateName: {
+            rules: [
+              { required: true, message: '请输入会社名!'},
+            ]
+          },
           rateTotal: {
             rules: [
               { required: false},
@@ -118,9 +125,9 @@
           },
         },
         url: {
-          add: "/rate/rateCustomer/add",
-          edit: "/rate/rateCustomer/edit",
-          queryById: "/rate/rateCustomer/queryById"
+          add: "/hiyo/rateCustomer/add",
+          edit: "/hiyo/rateCustomer/edit",
+          queryById: "/hiyo/rateCustomer/queryById"
         }
       }
     },
@@ -156,7 +163,7 @@
         this.model = Object.assign({}, record);
         this.visible = true;
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model,'rateNum','rateName','rateDate','rateSyuushitype','rateHiyoutype','rateTotal','rateThing','rateEigyou','rateTime','rateNote'))
+          this.form.setFieldsValue(pick(this.model,'rateNum','rateName','rateDate','rateSyuushitype','rateHiyoutype','rateTotal','rateThing','rateEigyou','rateTime'))
         })
       },
       //渲染流程表单数据
@@ -202,7 +209,7 @@
         })
       },
       popupCallback(row){
-        this.form.setFieldsValue(pick(row,'rateNum','rateName','rateDate','rateSyuushitype','rateHiyoutype','rateTotal','rateThing','rateEigyou','rateTime','rateNote'))
+        this.form.setFieldsValue(pick(row,'rateNum','rateName','rateDate','rateSyuushitype','rateHiyoutype','rateTotal','rateThing','rateEigyou','rateTime'))
       },
     }
   }

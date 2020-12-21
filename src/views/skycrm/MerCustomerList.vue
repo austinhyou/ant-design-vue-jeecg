@@ -106,7 +106,7 @@
     },
     data () {
       return {
-        description: '注文フォローマスタ管理页面',
+        description: '注文フォローマスタ管理ページ',
         // 表头
         columns: [
           {

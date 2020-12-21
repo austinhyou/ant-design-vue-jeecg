@@ -61,7 +61,7 @@
             icon="download"
             size="small"
             @click="downloadFile(text)">
-            下载
+            ダウンロード
           </a-button>
         </template>
 
@@ -70,7 +70,7 @@
 
           <a-divider type="vertical" />
           <a-dropdown>
-            <a class="ant-dropdown-link">最も <a-icon type="down" /></a>
+              <a class="ant-dropdown-link">最も <a-icon type="down" /></a>
             <a-menu slot="overlay">
               <a-menu-item>
                 <a @click="handleDetail(record)">詳細</a>
@@ -106,7 +106,7 @@
     },
     data () {
       return {
-        description: 'アフターサービス管理页面',
+        description: 'アフターサービス管理',
         // 表头
         columns: [
           {

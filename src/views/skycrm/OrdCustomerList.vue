@@ -106,7 +106,7 @@
     },
     data () {
       return {
-        description: '注文履歴管理页面',
+        description: '注文履歴管理ページ',
         // 表头
         columns: [
           {

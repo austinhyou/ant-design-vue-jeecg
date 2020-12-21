@@ -11,24 +11,24 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus">追加</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls('費用管理')">エクスポート</a-button>
+      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
+      <a-button type="primary" icon="download" @click="handleExportXls('費用情報マスタ')">导出</a-button>
       <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
-        <a-button type="primary" icon="import">インポート</a-button>
+        <a-button type="primary" icon="import">导入</a-button>
       </a-upload>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
-          <a-menu-item key="1" @click="batchDel"><a-icon type="delete"/>削除</a-menu-item>
+          <a-menu-item key="1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>
         </a-menu>
-        <a-button style="margin-left: 8px"> 一括操作 <a-icon type="down" /></a-button>
+        <a-button style="margin-left: 8px"> 批量操作 <a-icon type="down" /></a-button>
       </a-dropdown>
     </div>
 
     <!-- table区域-begin -->
     <div>
       <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
-        <i class="anticon anticon-info-circle ant-alert-icon"></i> 選択済み <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项
-        <a style="margin-left: 24px" @click="onClearSelected">クリア</a>
+        <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项
+        <a style="margin-left: 24px" @click="onClearSelected">清空</a>
       </div>
 
       <a-table
@@ -49,11 +49,11 @@
           <div v-html="text"></div>
         </template>
         <template slot="imgSlot" slot-scope="text">
-          <span v-if="!text" style="font-size: 12px;font-style: italic;">写真なし</span>
+          <span v-if="!text" style="font-size: 12px;font-style: italic;">无图片</span>
           <img v-else :src="getImgView(text)" height="25px" alt="" style="max-width:80px;font-size: 12px;font-style: italic;"/>
         </template>
         <template slot="fileSlot" slot-scope="text">
-          <span v-if="!text" style="font-size: 12px;font-style: italic;">ファイルなし</span>
+          <span v-if="!text" style="font-size: 12px;font-style: italic;">无文件</span>
           <a-button
             v-else
             :ghost="true"
@@ -61,23 +61,23 @@
             icon="download"
             size="small"
             @click="downloadFile(text)">
-            ダウンロード
+            下载
           </a-button>
         </template>
 
         <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">編集</a>
+          <a @click="handleEdit(record)">编辑</a>
 
           <a-divider type="vertical" />
           <a-dropdown>
-            <a class="ant-dropdown-link">最も <a-icon type="down" /></a>
+            <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
             <a-menu slot="overlay">
               <a-menu-item>
-                <a @click="handleDetail(record)">詳細</a>
+                <a @click="handleDetail(record)">详情</a>
               </a-menu-item>
               <a-menu-item>
-                <a-popconfirm title="削除しますか？" @confirm="() => handleDelete(record.id)">
-                  <a>削除</a>
+                <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
+                  <a>删除</a>
                 </a-popconfirm>
               </a-menu-item>
             </a-menu>
@@ -97,6 +97,7 @@
   import { mixinDevice } from '@/utils/mixin'
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
   import RateCustomerModal from './modules/RateCustomerModal'
+  import {filterMultiDictText} from '@/components/dict/JDictSelectUtil'
 
   export default {
     name: 'RateCustomerList',
@@ -106,7 +107,7 @@
     },
     data () {
       return {
-        description: '費用管理管理页面',
+        description: '費用情報マスタ管理ページ',
         // 表头
         columns: [
           {
@@ -122,15 +123,15 @@
           {
             title:'番号',
             align:"center",
-            dataIndex: 'rateNum'
+            dataIndex: 'rateNum_dictText'
           },
           {
             title:'会社名',
             align:"center",
-            dataIndex: 'rateName'
+            dataIndex: 'rateName_dictText'
           },
           {
-            title:'収支日付',
+              title:'収支日付',
             align:"center",
             dataIndex: 'rateDate',
             customRender:function (text) {
@@ -168,11 +169,6 @@
             dataIndex: 'rateTime'
           },
           {
-            title:'操作記録',
-            align:"center",
-            dataIndex: 'rateNote'
-          },
-          {
             title: '操作',
             dataIndex: 'action',
             align:"center",
@@ -182,11 +178,11 @@
           }
         ],
         url: {
-          list: "/rate/rateCustomer/list",
-          delete: "/rate/rateCustomer/delete",
-          deleteBatch: "/rate/rateCustomer/deleteBatch",
-          exportXlsUrl: "/rate/rateCustomer/exportXls",
-          importExcelUrl: "rate/rateCustomer/importExcel",
+          list: "/hiyo/rateCustomer/list",
+          delete: "/hiyo/rateCustomer/delete",
+          deleteBatch: "/hiyo/rateCustomer/deleteBatch",
+          exportXlsUrl: "/hiyo/rateCustomer/exportXls",
+          importExcelUrl: "hiyo/rateCustomer/importExcel",
 
         },
         dictOptions:{},

@@ -5,32 +5,32 @@
         <a-row>
           <a-col :span="24">
             <a-form-item label="番号" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <a-input v-decorator="['conNum']" placeholder="请输入番号"></a-input>
+              <j-dict-select-tag type="list" v-decorator="['conNum', validatorRules.conNum]" :trigger-change="true" dictCode="ord_customer,ORD_NUM,ORD_NUM" placeholder="请选择番号"/>
             </a-form-item>
           </a-col>
           <a-col :span="24">
             <a-form-item label="会社名" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <a-input v-decorator="['conName']" placeholder="请输入会社名"></a-input>
+              <j-dict-select-tag type="list" v-decorator="['conName', validatorRules.conName]" :trigger-change="true" dictCode="cus_customer,CUS_NAME,CUS_NAME" placeholder="请选择会社名"/>
             </a-form-item>
           </a-col>
           <a-col :span="24">
             <a-form-item label="契約名" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <a-input v-decorator="['conContract']" placeholder="请输入契約名"></a-input>
+              <a-input v-decorator="['conContract', validatorRules.conContract]" placeholder="请输入契約名"></a-input>
             </a-form-item>
           </a-col>
           <a-col :span="24">
             <a-form-item label="開始時間" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <j-date placeholder="请选择開始時間" v-decorator="['conStartdate']" :trigger-change="true" style="width: 100%"/>
+              <j-date placeholder="请选择開始時間" v-decorator="['conStartdate']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
             </a-form-item>
           </a-col>
           <a-col :span="24">
             <a-form-item label="終了時間" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <j-date placeholder="请选择終了時間" v-decorator="['conFindate']" :trigger-change="true" style="width: 100%"/>
+              <j-date placeholder="请选择終了時間" v-decorator="['conFindate']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
             </a-form-item>
           </a-col>
           <a-col :span="24">
             <a-form-item label="総額" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <a-input v-decorator="['conTotal']" placeholder="请输入総額"></a-input>
+              <a-input v-decorator="['conTotal', validatorRules.conTotal]" placeholder="请输入総額"></a-input>
             </a-form-item>
           </a-col>
           <a-col :span="24">
@@ -40,12 +40,12 @@
           </a-col>
           <a-col :span="24">
             <a-form-item label="掛金" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <a-input v-decorator="['conDebt']" placeholder="请输入掛金"></a-input>
+              <a-input v-decorator="['conDebt', validatorRules.conDebt]" placeholder="请输入掛金"></a-input>
             </a-form-item>
           </a-col>
           <a-col :span="24">
             <a-form-item label="契約状況" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <a-input v-decorator="['conCondition']" placeholder="请输入契約状況"></a-input>
+              <j-dict-select-tag type="list" v-decorator="['conCondition']" :trigger-change="true" dictCode="" placeholder="请选择契約状況"/>
             </a-form-item>
           </a-col>
           <a-col :span="24">
@@ -56,11 +56,6 @@
           <a-col :span="24">
             <a-form-item label="入力時間" :labelCol="labelCol" :wrapperCol="wrapperCol">
               <j-date placeholder="请选择入力時間" v-decorator="['conStarttime']" :trigger-change="true" :show-time="true" date-format="YYYY-MM-DD HH:mm:ss" style="width: 100%"/>
-            </a-form-item>
-          </a-col>
-          <a-col :span="24">
-            <a-form-item label="操作記録" :labelCol="labelCol" :wrapperCol="wrapperCol">
-              <a-input v-decorator="['conNote']" placeholder="请输入操作記録"></a-input>
             </a-form-item>
           </a-col>
           <a-col v-if="showFlowSubmitButton" :span="24" style="text-align: center">
@@ -79,12 +74,14 @@
   import { validateDuplicateValue } from '@/utils/util'
   import JFormContainer from '@/components/jeecg/JFormContainer'
   import JDate from '@/components/jeecg/JDate'  
+  import JDictSelectTag from "@/components/dict/JDictSelectTag"
 
   export default {
     name: 'ConCustomerForm',
     components: {
       JFormContainer,
       JDate,
+      JDictSelectTag,
     },
     props: {
       //流程表单data
@@ -120,11 +117,38 @@
         },
         confirmLoading: false,
         validatorRules: {
+          conNum: {
+            rules: [
+              { required: true, message: '请输入番号!'},
+            ]
+          },
+          conName: {
+            rules: [
+              { required: true, message: '请输入会社名!'},
+            ]
+          },
+          conContract: {
+            rules: [
+              { required: true, message: '请输入契約名!'},
+            ]
+          },
+          conTotal: {
+            rules: [
+              { required: false},
+              { pattern: /^(([1-9][0-9]*)|([0]\.\d{0,2}|[1-9][0-9]*\.\d{0,2}))$/, message: '请输入正确的金额!'},
+            ]
+          },
+          conDebt: {
+            rules: [
+              { required: false},
+              { pattern: /^(([1-9][0-9]*)|([0]\.\d{0,2}|[1-9][0-9]*\.\d{0,2}))$/, message: '请输入正确的金额!'},
+            ]
+          },
         },
         url: {
-          add: "/keiyaku/conCustomer/add",
-          edit: "/keiyaku/conCustomer/edit",
-          queryById: "/keiyaku/conCustomer/queryById"
+          add: "/kei/conCustomer/add",
+          edit: "/kei/conCustomer/edit",
+          queryById: "/kei/conCustomer/queryById"
         }
       }
     },
@@ -160,7 +184,7 @@
         this.model = Object.assign({}, record);
         this.visible = true;
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model,'conNum','conName','conContract','conStartdate','conFindate','conTotal','conAr','conDebt','conCondition','conReview','conStarttime','conNote'))
+          this.form.setFieldsValue(pick(this.model,'conNum','conName','conContract','conStartdate','conFindate','conTotal','conAr','conDebt','conCondition','conReview','conStarttime'))
         })
       },
       //渲染流程表单数据
@@ -206,7 +230,7 @@
         })
       },
       popupCallback(row){
-        this.form.setFieldsValue(pick(row,'conNum','conName','conContract','conStartdate','conFindate','conTotal','conAr','conDebt','conCondition','conReview','conStarttime','conNote'))
+        this.form.setFieldsValue(pick(row,'conNum','conName','conContract','conStartdate','conFindate','conTotal','conAr','conDebt','conCondition','conReview','conStarttime'))
       },
     }
   }
